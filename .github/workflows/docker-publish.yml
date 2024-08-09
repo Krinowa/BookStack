@@ -40,8 +40,8 @@ jobs:
       - name: Start Docker containers
         run: docker-compose up -d
 
-      - name: Run Composer Install
-        run: docker-compose run app composer install
+      - name: Update Composer
+        run: docker-compose run app composer self-update
 
       - name: Run Migration
         run: docker-compose run app php artisan migrate --database=mysql_testing

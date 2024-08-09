@@ -22,7 +22,6 @@ pipeline {
 
         stage('Test') {
             steps {
-                // Run tests using Docker
                 script {
                     docker.image('php:8.3.9-alpine3.20').inside {
                         sh 'docker-compose run app php artisan migrate --database=mysql_testing'

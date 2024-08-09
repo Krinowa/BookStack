@@ -34,11 +34,11 @@ jobs:
           sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
           sudo chmod +x /usr/local/bin/docker-compose
 
-      - name: Build the project
-        run: npm run build
-
       - name: Build Docker images
-        run: docker-compose build -d
+        run: docker-compose build
+
+      - name: Start Docker containers
+        run: docker-compose up -d
 
       - name: Run Migration
         run: docker-compose run app php artisan migrate --database=mysql_testing

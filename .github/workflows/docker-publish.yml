@@ -46,7 +46,7 @@ jobs:
         run: docker-compose build
 
       - name: Start Docker containers
-        run: docker-compose up -d db
+        run: docker-compose up -d
 
       - name: Check Container lists
         run: docker ps -a

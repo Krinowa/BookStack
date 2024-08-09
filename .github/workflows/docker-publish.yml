@@ -41,7 +41,7 @@ jobs:
         run: docker-compose up -d
 
       - name: Run Composer Install
-        run: docker-compose exec app composer install
+        run: docker-compose run app composer install
 
       - name: Run Migration
         run: docker-compose run app php artisan migrate --database=mysql_testing

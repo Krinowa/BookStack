@@ -6,18 +6,17 @@ pipeline {
     }
 
     stages {
-        stage('Install Dependencies') {
-            steps {
-                // Run Composer and NPM install
-                sh 'composer install'
-                sh 'npm install'
-            }
-        }
 
         stage('Build') {
             steps {
                 // Build the application
-                sh 'npm run build'
+                sh 'docker compose build'
+            }
+        }
+
+        steps("Login") {
+            steps {
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
             }
         }
 

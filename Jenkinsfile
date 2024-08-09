@@ -2,17 +2,10 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_CREDENTIALS_ID = 'krinowa-dockerhub'
+        DOCKER_CREDENTIALS = credentials('krinowa-dockerhub')
     }
 
     stages {
-        stage('Checkout') {
-            steps {
-                // Checkout the repository
-                git url: 'https://github.com/your-repository-url.git', branch: 'main'
-            }
-        }
-
         stage('Install Dependencies') {
             steps {
                 // Run Composer and NPM install
@@ -41,15 +34,6 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
-            steps {
-                script {
-                    docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS_ID) {
-                        sh 'docker-compose up --build -d'
-                    }
-                }
-            }
-        }
     }
 
     post {

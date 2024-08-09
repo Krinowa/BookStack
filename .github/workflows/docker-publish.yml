@@ -37,11 +37,6 @@ jobs:
       - name: Build Docker images
         run: docker-compose build
 
-      - name: Run database migrations and seeders
-        run: |
-          docker-compose run --rm app php artisan migrate --database=mysql_testing
-          docker-compose run --rm app php artisan db:seed --class=DummyContentSeeder --database=mysql_testing
-
       - name: Run tests
         run: docker-compose run --rm app php vendor/bin/phpunit
 

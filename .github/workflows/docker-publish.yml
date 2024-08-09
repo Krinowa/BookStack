@@ -54,6 +54,14 @@ jobs:
       - name: Check logs
         run:  docker-compose logs db
 
+      - name: Wait for database to be ready
+        run: |
+            until docker-compose exec -T db mysqladmin ping --silent; do
+              echo "Waiting for database..."
+              sleep 5
+            done
+
+
       - name: Run Migration
         run: docker-compose run app php artisan migrate --database=mysql_testing
 

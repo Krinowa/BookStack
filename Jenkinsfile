@@ -1,16 +1,27 @@
 pipeline {
     agent any
     stages {
-        stage("verify tooling") {
+
+        stage('Build') {
             steps {
-                bat '''
-                    docker version
-                    docker info
-                    docker compose version
-                    curl --version
-                    jq --version
-                '''
+                // Build the application
+                bat 'docker-compose build'
             }
+        }
+
+        stage('Test') {
+            steps {
+                bat 'docker-compose run --rm app php artisan migrate --database=mysql_testing'
+                bat 'docker-compose run --rm app php artisan db:seed --class=DummyContentSeeder --database=mysql_testing'
+                bat 'docker-compose run --rm app php vendor/bin/phpunit'
+            }
+        }
+    }
+
+    post {
+        always {
+            // Cleanup workspace or send notifications
+            cleanWs()
         }
     }
 }

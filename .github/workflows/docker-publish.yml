@@ -52,13 +52,13 @@ jobs:
         run: docker ps -a
 
       - name: Run Migration
-        run: docker-compose run app php artisan migrate --database=mysql_testing
+        run: docker-compose -f docker-compose.yml run app php artisan migrate --database=mysql_testing
 
       - name: Run Seeder
-        run: docker-compose run app php artisan db:seed --class=DummyContentSeeder --database=mysql_testing
+        run: docker-compose -f docker-compose.yml run app php artisan db:seed --class=DummyContentSeeder --database=mysql_testing
 
       - name: Run Test
-        run: docker-compose run app php vendor/bin/phpunit
+        run: docker-compose -f docker-compose.yml run app php vendor/bin/phpunit
 
       - name: Clean up Docker
         run: docker-compose down -v

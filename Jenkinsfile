@@ -14,20 +14,11 @@ pipeline {
             }
         }
 
-        stage("Login") {
-            steps {
-                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-            }
-        }
-
         stage('Test') {
             steps {
-                script {
-                    docker.image('php:8.3.9-alpine3.20').inside {
-                        sh 'docker-compose run app php artisan migrate --database=mysql_testing'
-                        sh 'docker-compose run app php artisan db:seed --class=DummyContentSeeder --database=mysql_testing'
-                        sh 'docker-compose run app php vendor/bin/phpunit'
-                    }
+                    sh 'docker-compose run app php artisan migrate --database=mysql_testing'
+                    sh 'docker-compose run app php artisan db:seed --class=DummyContentSeeder --database=mysql_testing'
+                    sh 'docker-compose run app php vendor/bin/phpunit'
                 }
             }
         }

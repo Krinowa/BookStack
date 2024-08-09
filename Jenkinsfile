@@ -1,5 +1,5 @@
 pipeline {
-    agent { docker { image 'php:8.3.9-alpine3.20' }}
+    agent any
 
     environment {
         DOCKER_CREDENTIALS_ID = 'krinowa-dockerhub'
@@ -31,9 +31,13 @@ pipeline {
         stage('Test') {
             steps {
                 // Run tests using Docker
-                sh 'docker-compose run app php artisan migrate --database=mysql_testing'
-                sh 'docker-compose run app php artisan db:seed --class=DummyContentSeeder --database=mysql_testing'
-                sh 'docker-compose run app php vendor/bin/phpunit'
+                script {
+                    docker.image('php:8.3.9-alpine3.20').inside {
+                        sh 'docker-compose run app php artisan migrate --database=mysql_testing'
+                        sh 'docker-compose run app php artisan db:seed --class=DummyContentSeeder --database=mysql_testing'
+                        sh 'docker-compose run app php vendor/bin/phpunit'
+                    }
+                }
             }
         }
 

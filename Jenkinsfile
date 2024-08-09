@@ -20,7 +20,6 @@ pipeline {
                     sh 'docker-compose run app php artisan db:seed --class=DummyContentSeeder --database=mysql_testing'
                     sh 'docker-compose run app php vendor/bin/phpunit'
                 }
-            }
         }
 
     }

@@ -9,12 +9,6 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
-            steps {
-                bat 'docker-compose up'
-            }
-        }
-
         stage('Test') {
             steps {
                 bat 'docker-compose run --rm app php artisan migrate --database=mysql_testing'
